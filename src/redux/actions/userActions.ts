@@ -1,4 +1,4 @@
-import { SET_USER, SET_ERRORS, LOADING_UI, CLEAR_ERRORS, SET_UNAUTHENTICATED } from '../types'
+import { SET_USER, SET_ERRORS, LOADING_UI, CLEAR_ERRORS, SET_UNAUTHENTICATED, LOADING_USER } from '../types'
 import axios from 'axios'
 
 export const loginUser = (userData: any, history: any) => (dispatch: any) => {
@@ -12,6 +12,7 @@ export const loginUser = (userData: any, history: any) => (dispatch: any) => {
 			axios.defaults.headers.common.Authorization = token
 			dispatch(getUserData())
 			dispatch({ type: CLEAR_ERRORS })
+			history.push('/')
 		})
 		.catch(err => {
 			dispatch({
@@ -22,15 +23,16 @@ export const loginUser = (userData: any, history: any) => (dispatch: any) => {
 }
 
 export const getUserData = () => (dispatch: any) => {
+	dispatch({ type: LOADING_UI })
 	const userId = localStorage.getItem('userId')
 	axios
 		.get(`/users/${userId}`)
 		.then(res => {
-			localStorage.setItem('userDetails', `${JSON.stringify(res.data)}`)
 			dispatch({
 				type: SET_USER,
 				payload: res.data,
 			})
+			dispatch({ type: CLEAR_ERRORS })
 		})
 		.catch(err => {
 			console.log(err)
@@ -44,4 +46,5 @@ export const logoutUser = () => (dispatch: any) => {
 	dispatch({
 		type: SET_UNAUTHENTICATED,
 	})
+	// window.location.href = '/login'
 }

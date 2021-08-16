@@ -12,7 +12,7 @@ interface MyRouteProps extends RouteProps {
 }
 
 const PrivateRoute: React.FunctionComponent<MyRouteProps> = ({ component: Component, authenticated, loading, ...rest }: any) => (
-	<Route {...rest} render={(props) => (localStorage.token ? (
+	<Route {...rest} render={(props) => (authenticated ? (
 		<div id="wrapper">
 			<nav className="navbar-default navbar-static-side" role="navigation">
 				<div className="sidebar-collapse">
@@ -27,7 +27,7 @@ const PrivateRoute: React.FunctionComponent<MyRouteProps> = ({ component: Compon
 				</div>
 			</div>
 		</div>
-	) : <Redirect to='/' />)} />
+	) : <Redirect to='/login' />)} />
 )
 
 const mapStateToProps = (state: any) => ({

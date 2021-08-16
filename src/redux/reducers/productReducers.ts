@@ -1,16 +1,15 @@
-import { SET_PRODUCT_CATEGORIES, SET_PRODUCT_CATEGORY, SET_PRODUCTS } from '../types'
+import { SET_PRODUCT_CATEGORIES, SET_PRODUCT_CATEGORY } from '../types'
 
 export type State = Readonly<{
     productCategories: [],
-    productCategory: object,
-    productDetails: []
+    productCategory: object
 }>
 
 const initialState: State = {
     productCategories: [],
-    productCategory: {},
-    productDetails: []
+    productCategory: {}
 }
+
 
 export default function productReducers(state = initialState, action: any) {
     switch (action.type) {
@@ -23,11 +22,6 @@ export default function productReducers(state = initialState, action: any) {
             return {
                 ...state,
                 productCategory: action.payload,
-            }
-        case SET_PRODUCTS:
-            return {
-                ...state,
-                productDetails: action.payload,
             }
         default:
             return state

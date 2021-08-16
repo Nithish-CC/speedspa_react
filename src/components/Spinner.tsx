@@ -6,8 +6,8 @@ const Spinner = (props: any) => {
 	return (
 		<React.Fragment>
 			{props.authenticated && props.loading && (
-				<div id='loadingSpinner'>
-					<i className='fa fa-spinner fa-spin fa-5x'></i>
+				<div id="loadingSpinner">
+					<i className="fa fa-spinner fa-spin fa-5x"></i>
 				</div>
 			)}
 		</React.Fragment>

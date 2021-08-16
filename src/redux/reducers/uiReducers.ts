@@ -1,8 +1,7 @@
-import { SET_ERRORS, LOADING_UI, CLEAR_ERRORS, LOADING_CLEAR, BUTTON_LOADING } from '../types'
+import { SET_ERRORS, LOADING_UI, CLEAR_ERRORS } from '../types'
 const initialState = {
 	loading: false,
 	errors: null,
-	buttonLoading: false
 }
 
 export default function uiReducers(state = initialState, action: any) {
@@ -23,16 +22,6 @@ export default function uiReducers(state = initialState, action: any) {
 			return {
 				...state,
 				loading: true,
-			}
-		case LOADING_CLEAR:
-			return {
-				...state,
-				buttonLoading: false,
-			}
-		case BUTTON_LOADING:
-			return {
-				...state,
-				buttonLoading: true,
 			}
 		default:
 			return state

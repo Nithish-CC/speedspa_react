@@ -4,35 +4,27 @@ import { logoutUser } from '../../redux/actions/userActions'
 import Clock from 'react-live-clock'
 
 const Header = (props: any) => {
+
 	const handleClickLogout = (e: any) => {
 		e.preventDefault()
 		props.logoutUser()
 	}
 
-	const handleMinimalNavbar = (e: any) => {
-		let body = document.getElementsByTagName('body')[0]
-		if(body.classList.contains('mini-navbar')){
-			body.classList.remove('mini-navbar')
-		}else{
-			body.classList.add('mini-navbar')
-		}
-	}
-
 	return (
 		<React.Fragment>
 			{props.authenticated && (
-				<div className='row border-bottom'>
-					<nav className='navbar navbar-static-top' role='navigation' style={{ 'marginBottom': '0' }}>
-						<div className='navbar-header'>
-							<a onClick={e => handleMinimalNavbar(e)} className='navbar-minimalize minimalize-styl-2 btn btn-primary'><i className='fa fa-bars'></i></a>
+				<div className="row border-bottom">
+					<nav className="navbar navbar-static-top" role="navigation" style={{ 'marginBottom': '0' }}>
+						<div className="navbar-header">
+							<a className="navbar-minimalize minimalize-styl-2 btn btn-primary" href="#"><i className="fa fa-bars"></i></a>
 						</div>
-						<div id='clock' className='clock'>
+						<div id="clock" className="clock">
 							<Clock format={'dddd, MMMM Do YYYY, hh:mm:ss A'} ticking={true} />
 						</div>
-						<ul className='nav navbar-top-links navbar-right'>
+						<ul className="nav navbar-top-links navbar-right">
 							<li>
 								<a onClick={handleClickLogout}>
-									<i className='fa fa-sign-out-alt'></i>&nbsp;Log out</a>
+									<i className="fa fa-sign-out-alt"></i>Log out</a>
 							</li>
 						</ul>
 					</nav>

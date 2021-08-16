@@ -62,6 +62,10 @@
     padding: 6rem;
 }
 
-.modal-backdrop{
+.modal-backdrop.fade{
     opacity: 0.5;
+}
+.fade.modal{
+    opacity: 1 !important;
+    padding: 50px;
 }

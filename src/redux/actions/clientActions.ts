@@ -1,4 +1,4 @@
-import { LOADING_UI, CLEAR_ERRORS, SET_ERRORS, BUTTON_LOADING, LOADING_CLEAR, SET_CLIENTS, SET_CLIENT } from '../types'
+import { LOADING_UI, CLEAR_ERRORS, SET_CLIENTS, SET_CLIENT } from '../types'
 import axios from 'axios'
 
 export const getAllClients = (params: any) => (dispatch: any) => {
@@ -33,37 +33,25 @@ export const searchClients = (params: any) => (dispatch: any) => {
 		})
 }
 
-export const addClient = (params: any, history: any) => (dispatch: any) => {
-	dispatch({ type: BUTTON_LOADING })
+export const addClient = (params: any, history: any) => {
 	axios
 		.post('users', params)
 		.then(res => {
 			history.push('/clients')
-			dispatch({ type: LOADING_CLEAR })
 		})
 		.catch(err => {
-			dispatch({
-				type: SET_ERRORS,
-				payload: err.response.data,
-			})
-			dispatch({ type: LOADING_CLEAR })
+			console.log(err)
 		})
 }
 
-export const updateClient = (params: any, history: any) => (dispatch: any) => {
-	dispatch({ type: BUTTON_LOADING })
+export const updateClient = (params: any, history: any, props: any) => {
 	axios
 		.patch(`users/${params.id}`, params)
 		.then(res => {
 			history.push('/Clients')
-			dispatch({ type: LOADING_CLEAR })
 		})
 		.catch(err => {
-			dispatch({
-				type: SET_ERRORS,
-				payload: err.response.data,
-			})
-			dispatch({ type: LOADING_CLEAR })
+			console.log(err)
 		})
 }
 
@@ -79,12 +67,10 @@ export const getClientDetails = (clientId: any, params: any) => (dispatch: any) 
 			dispatch({ type: CLEAR_ERRORS })
 		})
 		.catch(err => {
-			dispatch({
-				type: SET_ERRORS,
-				payload: err.response.data,
-			})
+			console.log(err)
 		})
 }
+
 
 export const deleteClient = (clientId: any, params: any) => (dispatch: any) => {
 	axios
@@ -93,22 +79,5 @@ export const deleteClient = (clientId: any, params: any) => (dispatch: any) => {
 		})
 		.catch(err => {
 			console.log(err)
-		})
-}
-
-export const uploadClients = (params: any, history: any) => (dispatch: any) => {
-	dispatch({ type: BUTTON_LOADING })
-	axios
-		.post('clients/upload', params)
-		.then(res => {
-			history.push('/clients')
-			dispatch({ type: LOADING_CLEAR })
-		})
-		.catch(err => {
-			dispatch({
-				type: SET_ERRORS,
-				payload: err.response.data,
-			})
-			dispatch({ type: LOADING_CLEAR })
 		})
 }

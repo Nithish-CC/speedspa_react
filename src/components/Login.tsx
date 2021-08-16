@@ -9,7 +9,9 @@ const Login = (props: any) => {
 		email: '',
 		password: '',
 	})
-	const logo = localStorage.getItem('logo')
+	const [errors, setErrors] = useState({} as Error)
+	const [loading, setLoading] = useState(false)
+
 
 	const hostname = 'demo-sofabnails.savantsaloncrm.com'
 	// const hostname = window.location.hostname
@@ -22,11 +24,16 @@ const Login = (props: any) => {
 
 	useEffect(() => {
 		getBussinessDetails()
+		if (UI.errors) {
+			setErrors(UI.errors)
+		}
+		setLoading(UI.loading)
 	}, [hostname])
 
 
 	const handleSubmit = (e: any) => {
 		e.preventDefault()
+		setLoading(UI.loading)
 		const userData = {
 			email: values.email,
 			password: values.password,
@@ -43,17 +50,17 @@ const Login = (props: any) => {
 	}
 
 	return (
-		<div id='login' className='middle-box text-center loginscreen animated fadeInDown'>
+		<div id="login" className='middle-box text-center loginscreen animated fadeInDown'>
 			<div>
 				<div>
 					<h1 className='logo-name'>
-						<img src={logo ? logo : process.env.PUBLIC_URL + 'assets/logo.png'} alt='VNS logo' style={{ width: '75%' }} />
+						<img src={process.env.PUBLIC_URL+'assets/logo.png'} alt="VNS logo" style={{ width: '75%' }} />
 					</h1>
 				</div>
 				<form className='m-t'>
 					<h3>Login with email:</h3>
-					{UI.errors && UI.errors.message && (
-						<h3><span className='text-danger'>{UI.errors.message}</span></h3>
+					{errors.message && (
+						<h3><span className='text-danger'>{errors.message}</span></h3>
 					)}
 					<div className='form-group'>
 						<input type='email'

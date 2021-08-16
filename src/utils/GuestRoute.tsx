@@ -9,7 +9,7 @@ interface MyRouteProps extends RouteProps {
 }
 
 const GuestRoute: React.FunctionComponent<MyRouteProps> = ({ component: Component, authenticated, ...rest }) => (
-	<Route {...rest} render={props => (authenticated ? <Redirect to='/dashboard' /> : <Component {...props} />)} />
+	<Route {...rest} render={props => (authenticated ? <Redirect to='/' /> : <Component {...props} />)} />
 )
 
 const mapStateToProps = (state: any) => ({
