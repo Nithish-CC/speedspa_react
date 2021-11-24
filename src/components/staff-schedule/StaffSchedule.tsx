@@ -428,7 +428,7 @@ const StaffSchedule = (props: any) => {
 																			<Button
 																				variant="white"
 																				type="button"
-																				//onClick={(e) => handleCancel(e)}
+																				onClick={()=>{history.push('/staff-schedule')}}
 																			>
 																				Cancel
 																			</Button>

@@ -227,7 +227,7 @@ const ServiceOrders = (props: any) => {
 		});
 		return sumOfAddition;
 	};
-
+	
 	return (
 		<React.Fragment>
 			{user.authenticated && !UI.loading && (
@@ -429,9 +429,7 @@ const ServiceOrders = (props: any) => {
 																		<React.Fragment>
 																			<tr className="gradeX">
 																				<td>
-																					{moment(order.timeStart).format(
-																						"MMM d, yyyy h:mma"
-																					)}
+																					{moment.utc(order.timeStart).format('lll')}
 																				</td>
 																				<td
 																					style={{

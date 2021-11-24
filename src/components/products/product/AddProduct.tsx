@@ -67,9 +67,11 @@ const Product = (props: any) => {
 	const [imageButtonHandle, setImageButtonHandle] = useState("Click Add");
 	const [imageToUpload, setImageToUpload] = useState([]);
 	const [stopLoading, setStopLoading] = useState("loading");
+	const[imageSortUrl,setImageSortUrl] = useState<any[]>([])
 
 	//final sorted image
 	let checkDataUrl: any[] = [];
+	const [checkurl, setCheckUrl] = useState<any[]>([]);
     //uploaded image
 	let imageBySortUrl: any[] = [];
 	let imageButtonHandleClick = "Click Add";
@@ -84,7 +86,7 @@ const Product = (props: any) => {
 			setActive(getProductProductView.active);
 			SetExcludeInvCalc(getProductProductView.excludeInvCalc);
 			console.log(getProductProductView.images);
-			checkDataUrl = getProductProductView.images;
+			setCheckUrl(getProductProductView.images);
 			setParams(getProductProductView);
 			if (getProductProductView.images && getProductProductView.images.length && view == true) {
 				getProductProductView.images.forEach((url: any, index: any) => {
@@ -106,7 +108,7 @@ const Product = (props: any) => {
 		}
 		props.getAllProductCategories(params);
 		checkDataUrl = [];
-		imageBySortUrl = [];
+		setImageSortUrl([]);
 	}, [view]);
 
 	const categoriesIdFunc = (data: any) => {
@@ -215,16 +217,41 @@ const Product = (props: any) => {
 		if (isExist >= 0) checkData.splice(isExist, 1);
 	};
 
+
 	// Image Tab
 	const imgSortView = (e: any, key: any) => {
-		const productData = [...imageBySortUrl];
+		const productData = [...imageSortUrl];
+		console.log(productData[key].index, Number(e.target.value));
 		productData[key].index = Number(e.target.value);
-		imageBySortUrl = productData;
+		console.log(productData[key]);
+		console.log(productData);
+		setImageSortUrl(productData);
 	};
 
+	// const handleCancel = (e: any) => {
+	// 	console.log("clicked");
+	// 	props.history.push("/products");
+	// };
+
+	//Image Upload To Table
+	// const imgPass = (image: any) => {
+	// 	if (view == false) {
+	// 		imageSortUrl.push({ image: image, index: imageSortUrl.length + 1 });
+	// 	} else if (view == true) {
+	// 		imageSortUrl.push({ image: image, index: imageSortUrl.length + 1 });
+	// 	}
+	// };
+
+	
+	// const imgSortView = (e: any, key: any) => {
+	// 	const productData = [...imageBySortUrl];
+	// 	productData[key].index = Number(e.target.value);
+	// 	imageBySortUrl = productData;
+	// };
+
 	const imgPass = (image: any) => {
-		imageBySortUrl.push({ image: image, index: imageBySortUrl.length + 1 });
-		console.log(imageBySortUrl);
+		imageSortUrl.push({ image: image, index: imageSortUrl.length + 1 });
+		console.log(imageSortUrl);
 	};
 
 	const _arrayBufferToBase64 = (buffer: any) => {
@@ -278,13 +305,13 @@ const Product = (props: any) => {
 		sortedValues.forEach((element: any) => {
 			tempArr.push(element.image);
 		});
-		checkDataUrl = tempArr;
-		imageBySortUrl = imageSortUrl;
+		setCheckUrl(tempArr);
+		setImageSortUrl(imageSortUrl);
 	};
 
 	const handleRemoveImage = (index: any) => {
-		imageBySortUrl.splice(index, 1);
-		Sortable(imageBySortUrl);
+		imageSortUrl.splice(index, 1);
+		Sortable(imageSortUrl);
 	};
 
 	const handleCancel = (e: any) => {
@@ -828,9 +855,9 @@ const Product = (props: any) => {
 																								</tr>
 																							</thead>
 																							<tbody>
-																								{imageBySortUrl &&
-																								imageBySortUrl.length ? (
-																									imageBySortUrl.map(
+																								{imageSortUrl &&
+																								imageSortUrl.length ? (
+																									imageSortUrl.map(
 																										(
 																											url: any,
 																											key: any
@@ -1027,7 +1054,7 @@ const Product = (props: any) => {
 																						className="btn btn-primary"
 																						type="submit"
 																						onClick={(e) => {
-																							Sortable(imageBySortUrl);
+																							Sortable(imageSortUrl);
 																							setButtonSubmit("submit");
 																						}}>
 																						Save Changes

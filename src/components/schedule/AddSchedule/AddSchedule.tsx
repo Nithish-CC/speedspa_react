@@ -37,6 +37,7 @@ const AddSchedule = (props: any) => {
 	const schedule = useSelector((state: any) => state.schedule);
 	const appointment = schedule.appointment;
 	const appointmentOrder = schedule.appointmentOrder;
+	const history = useHistory();
 	const searchInput = useRef();
 	const [changeStaff, setchangeStaff] = useState({ name: "", value: "" });
 	const [options, setOptions] = useState<any[]>([]);
@@ -251,7 +252,8 @@ const AddSchedule = (props: any) => {
 		values.services = [staffMainService[0]];
 		values.timeStart = setDateTime;
 		repeatAppointments(values)
-		//props.addAppointments(values, queryString);
+		props.addAppointments(values, queryString);
+		history.push('/schedule')
 	};
 
 	const selectedValue = (value: any) => {
@@ -449,8 +451,7 @@ const AddSchedule = (props: any) => {
 			}
 		}
 		return repeatArrList;
-	}
-
+	}	
 
 	return (
 		<React.Fragment>
@@ -632,9 +633,7 @@ const AddSchedule = (props: any) => {
 																<label className="control-label">
 																	Appointment Time
 																</label>
-																<div
-																	className="input-group  form-control"
-																	style={{ zIndex: "1", fontSize: "15px" }}>
+															
 																	<DatePicker
 																		selected={startDate}
 																		showPopperArrow={false}
@@ -645,7 +644,7 @@ const AddSchedule = (props: any) => {
 																		onChange={(date: any) => setStartDate(date)}
 																		dateFormat="EEE MMMM d, yyyy"
 																	/>
-																</div>
+																
 															</div>
 															{/* <div className="col-lg-5">
 																<label className="control-label">
@@ -682,7 +681,7 @@ const AddSchedule = (props: any) => {
 														</FormGroup>
 														<FormGroup>
 															<Col lg="12">
-																<Button className="btn btn-white" type="button">
+																<Button className="btn btn-white" style={{backgroundColor:"white",color:"black"}} type="button" onClick={()=>{history.push('/schedule')}}>
 																	Cancel
 																</Button>
 																&nbsp;

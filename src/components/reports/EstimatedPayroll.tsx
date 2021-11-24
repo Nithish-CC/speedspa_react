@@ -870,7 +870,7 @@ const EstimatedPayroll = (props: any) => {
 																					{eachPayRoll.totalHours}
 																				</td>
 																				<td className='text-center'>
-																					<a
+																					{eachPayRoll.serviceRevenue > 0 && eachPayRoll.servicePayout > 0 && eachPayRoll.tipRevenue > 0 && eachPayRoll.tipPayout > 0  && eachPayRoll.productRevenue>0 && eachPayRoll.productPayout>0 && eachPayRoll.payoutCash > 0 && eachPayRoll.payoutCheck > 0  && <a
 																						href=''
 																						data-toggle='modal'
 																						data-target='.bs-example-modal-lg'
@@ -883,7 +883,7 @@ const EstimatedPayroll = (props: any) => {
 																					>
 																						<i className='glyphicon glyphicon-eye-open'></i>{' '}
 																						Show
-																					</a>
+																					</a>}
 																				</td>
 																			</tr>
 																		);

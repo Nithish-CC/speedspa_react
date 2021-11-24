@@ -82,8 +82,7 @@ const ServiceOrder = (props: any) => {
 		lastName: "1",
 	});
 	useEffect(() => setLocalUser(JSON.parse(localStorage.userDetails)), [userDetails]);
-	console.log(cardButton)
-	console.log(cardMonth,cardYear,cardNumber,cardCVV,cardTip,cardTotalAmt)
+
 
 	//USE-EFFECT
 
@@ -104,13 +103,16 @@ const ServiceOrder = (props: any) => {
 	}, [view]);
 
 	useEffect(() => {
-		const service = _.filter(
-			serviceDetails,
-			(serviceDetails) => serviceDetails.categoryId === serviceOrderView.categoryId
-		);
+		console.log(serviceDetails)
+		const service = _.filter(serviceDetails,(serviceDetails) => serviceDetails.categoryId === serviceOrderView.categoryId);
+		console.log(service + "++++")
+		if(serviceData && serviceData.length)
+		{
+			serviceName(service,serviceData);
+		}
+	}, [serviceDetails,serviceOrderView,serviceData]);
 
-		serviceName(service);
-	}, [serviceDetails]);
+	console.log(serviceDetails)
 
 	useEffect(() => {
 		setServiceData(serviceOrderView.items);
@@ -126,14 +128,20 @@ const ServiceOrder = (props: any) => {
 	//FUNCTION CALLS
 
 	//FOR SEARCH FILTER SERVICE NAMES LISITING
-	const serviceName = (service: any) => {
+	const serviceName = (service: any,serviceData:any) => {
 		let tempArr: any[] = [];
 		service.forEach((element: any) => {
+			serviceData.forEach((value:any) =>{
+				if(value.parent == element.id){
+					 element.price = value.amount;
+				}
+			})
 			tempArr.push({
 				value: element.id,
 				...element,
 			});
 		});
+		console.log(tempArr,"-----")
 		setServiceTable(tempArr);
 	};
 
@@ -157,13 +165,11 @@ const ServiceOrder = (props: any) => {
 
 	//TO FIND THE EXSISTING SERVICE AND ADD
 	const addService = () => {
-		
 		if (serviceSelected.id) {
 			const duplicate = serviceData.filter((item: any) => {
 				if (!item.parent) {
 					item.parent = item.id;
-				}
-			
+				}			
 				return item.parent.includes(serviceSelected.id);
 			});
 			if (!duplicate.length) {
@@ -212,24 +218,20 @@ const ServiceOrder = (props: any) => {
 
 	//TO REMOVE TABLE SERVICE DATA
 	const tableData = (key: number, value: any) => {
-		
 		serviceData.splice(key, 1);
 		deleteUpdate(serviceData);
 	};
 
 	useEffect(() => {
 		const year = moment().year();
-
 		let temp: any[] = [];
 		for (var i = year; i <= 10; i++) {
 			temp.push(year + i);
 		}
-
 	}, []);
 
 
 	const handleItems = () =>{
-		
 		let tempArr:any[] = [];
 		serviceData.forEach((element: any) => {
 			let tempObj = {}
@@ -249,7 +251,6 @@ const ServiceOrder = (props: any) => {
 			status: "created"
 		}
 		props.updateServiceOrder(values,(success: any, key: any) => {
-			
 			if (success) {
 				let params={
 					...serviceOrderView
@@ -266,7 +267,6 @@ const ServiceOrder = (props: any) => {
 		for (let i = 0; i < 10; i++) {
 			tempArr.push(moment().year()+i)
 		}
-		console.log(tempArr)
 		setGetYear(tempArr);
 
 	};
@@ -839,7 +839,7 @@ const ServiceOrder = (props: any) => {
 																		<div className="form-group">
 																			<div className="col-sm-12">
 																				<Button
-																					className="btn btn-white"
+																					className="btn btn-white" style={{backgroundColor:"white",color:"black"}}
 																					type="button" onClick={()=>{history.push('/services/orders')}}>
 																					Cancel
 																				</Button>
