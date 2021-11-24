@@ -21,3 +21,20 @@ export const getBusinessDetails = (hostname:any) => (dispatch: any) => {
 			console.log(err)
 		})
 }
+
+//For Schedule page
+export const getUserBusinessDetails = (params:any) => (dispatch: any) => {
+	dispatch({ type: LOADING_UI })
+	axios
+		.get(`/business/details`,{params})
+		.then(res => {
+			dispatch({
+				type: SET_BUSINESS_DETAILS,
+				payload: res.data,
+			})
+			dispatch({ type: CLEAR_ERRORS })
+		})
+		.catch(err => {
+			console.log(err)
+		})
+}

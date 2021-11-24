@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import PageHeader from '../../core/PageHeader'
-import { getAllCategory, getAllService } from '../../../redux/actions/serviceActions'
+import { getAllCategory, getAllService,deleteService } from '../../../redux/actions/serviceActions'
 import { sorting, buildFilter } from '../../../utils/common'
 import { Link } from 'react-router-dom'
 import Pagination from 'react-js-pagination'
@@ -109,7 +109,7 @@ const Services = (props: any) => {
         let params = {
             businessId: localStorage.getItem('businessId'),
         };
-        props.deleteCategory(modalPopup.id, params);
+        props.deleteService(modalPopup.id, params);
         closeModal();
         allCategories.splice(modalPopup.index, 1);
     };
@@ -251,7 +251,8 @@ const Services = (props: any) => {
 
 const mapActionsToProps = {
     getAllCategory,
-    getAllService
+    getAllService,
+    deleteService
 }
 
 export default connect(null, mapActionsToProps)(Services)

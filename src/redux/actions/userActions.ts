@@ -1,4 +1,4 @@
-import { SET_USER, SET_ERRORS, LOADING_UI, CLEAR_ERRORS, SET_UNAUTHENTICATED, LOADING_USER } from '../types'
+import { SET_USER, SET_ERRORS, LOADING_UI, CLEAR_ERRORS, SET_UNAUTHENTICATED, SET_PAYEMENT_CARD, BUTTON_LOADING, LOADING_CLEAR } from '../types'
 import axios from 'axios'
 
 export const loginUser = (userData: any, history: any) => (dispatch: any) => {
@@ -12,7 +12,6 @@ export const loginUser = (userData: any, history: any) => (dispatch: any) => {
 			axios.defaults.headers.common.Authorization = token
 			dispatch(getUserData())
 			dispatch({ type: CLEAR_ERRORS })
-			history.push('/')
 		})
 		.catch(err => {
 			dispatch({
@@ -23,16 +22,15 @@ export const loginUser = (userData: any, history: any) => (dispatch: any) => {
 }
 
 export const getUserData = () => (dispatch: any) => {
-	dispatch({ type: LOADING_UI })
 	const userId = localStorage.getItem('userId')
 	axios
 		.get(`/users/${userId}`)
 		.then(res => {
+			localStorage.setItem('userDetails', `${JSON.stringify(res.data)}`)
 			dispatch({
 				type: SET_USER,
 				payload: res.data,
 			})
-			dispatch({ type: CLEAR_ERRORS })
 		})
 		.catch(err => {
 			console.log(err)
@@ -46,5 +44,55 @@ export const logoutUser = () => (dispatch: any) => {
 	dispatch({
 		type: SET_UNAUTHENTICATED,
 	})
-	// window.location.href = '/login'
+}
+
+//Payment with card for product -> orders
+export const getPaymentCC = (clientId: any, params: any) => (dispatch: any) => {
+	axios
+		.get(`users/${clientId}/cards`, { params })
+		.then(res => {
+			dispatch({
+				type: SET_PAYEMENT_CARD,
+				payload: res.data,
+			})
+			dispatch({ type: CLEAR_ERRORS })
+		})
+		.catch(err => {
+			console.log(err)
+		})
+}
+
+export const makePaymentCC = (params: any, callback: any) => (dispatch: any) => {
+	dispatch({ type: BUTTON_LOADING })
+	axios
+		.post('/merchant/payment', params)
+		.then(res => {
+			const id = res.data
+			callback(true, id);
+			dispatch({ type: LOADING_CLEAR })
+		})
+		.catch(err => {
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response,
+			})
+			dispatch({ type: LOADING_CLEAR })
+		})
+}
+
+export const refundPayment = (params: any, history: any) => (dispatch: any) => {
+	dispatch({ type: BUTTON_LOADING })
+	axios
+		.post('/merchant/void', params)
+		.then(res => {
+			history.push('/products/orders');
+			dispatch({ type: LOADING_CLEAR })
+		})
+		.catch(err => {
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response,
+			})
+			dispatch({ type: LOADING_CLEAR })
+		})
 }

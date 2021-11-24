@@ -7,28 +7,24 @@ const PageHeader = (props: any) => {
 		<React.Fragment>
 			{props.authenticated && (
                 <div>
-                <div className="row wrapper border-bottom white-bg page-heading" style={{'padding': '10px'}}>
-                    <div className="col-sm-12">
-                        <div className="col-sm-9">
+                <div className='row wrapper border-bottom white-bg page-heading' style={{'padding': '10px'}}>
+                    <div className='col-sm-12'>
+                        <div className='col-sm-9'>
                             <h2 style={{'margin': '10px 0'}}>
                                 {props.title}
-                                {/* Welcome,  */}
-                                {/* {props.businessDetails.businessName} */}
                             </h2>
                         </div>
-                        <div className="col-sm-3 title-action" style={{'padding':'10px 0'}}>
-                            {props.buttons && props.buttons.length ? (
+                        <div className='col-sm-3 title-action' style={{'padding':'10px 0'}}>
+                            {props.buttons && props.buttons.length && (
                                 props.buttons.map((button: any, index:any) => {
                                     return (
-                                        <Link key={index} to={button.url} className="btn btn-sm btn-primary" style={{'marginRight': '5px'}}>
+                                        <Link key={index} to={button.url ? button.url : '#'} className='btn btn-sm btn-primary' style={{'marginRight': '5px'}} onClick={button.callback}>
                                             {button.title}
                                         </Link>
 
                                     );
                                 })
-                            ) : 
-                            <></>
-                            }
+                            )}
                         </div>
                     </div>
                 </div>

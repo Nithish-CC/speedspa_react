@@ -1,4 +1,4 @@
-import { LOADING_UI, CLEAR_ERRORS, SET_STAFF, SET_STAFFS ,BUTTON_LOADING,LOADING_CLEAR,SET_ERRORS,SET_STAFF_RESOURCES,SET_STAFF_RESPONSE_DATA} from '../types'
+import { LOADING_UI, CLEAR_ERRORS, SET_STAFF, SET_STAFFS, BUTTON_LOADING, LOADING_CLEAR, SET_ERRORS, SET_STAFF_RESOURCES, SET_STYLIST,SET_STAFF_SERVICE } from '../types'
 import axios from 'axios'
 
 export const getAllStaff = (params: any) => (dispatch: any) => {
@@ -6,6 +6,7 @@ export const getAllStaff = (params: any) => (dispatch: any) => {
 	axios
 		.get(`/users/search?`, { params })
 		.then(res => {
+			console.log(res);
 			dispatch({
 				type: SET_STAFFS,
 				payload: res.data,
@@ -17,13 +18,14 @@ export const getAllStaff = (params: any) => (dispatch: any) => {
 		})
 }
 
-export const searchStaff = (params: any) => (dispatch: any) => {
+export const getAllStylist = (params: any) => (dispatch: any) => {
 	dispatch({ type: LOADING_UI })
 	axios
-		.get(`/users/search`, { params })
+		.get(`/users/search?`, { params })
 		.then(res => {
+			console.log(res);
 			dispatch({
-				type: SET_STAFFS,
+				type: SET_STYLIST,
 				payload: res.data,
 			})
 			dispatch({ type: CLEAR_ERRORS })
@@ -33,25 +35,20 @@ export const searchStaff = (params: any) => (dispatch: any) => {
 		})
 }
 
-export const addStaff = (params: any, history: any, callback:any) => (dispatch: any) => {
+
+export const addStaff = (params: any, callback: any) => (dispatch: any) => {
 	dispatch({ type: BUTTON_LOADING })
-		axios
+	axios
 		.post('users', params)
 		.then(res => {
-			const id = res.data.id
-			const businessId = res.data.businessId
-			const serviceIds = res.data.serviceIds
-			const params = {
-				id:id,
-				businessId:businessId,
-				serviceIds:serviceIds,
-				resourceId:id
+			if (res.data) {
+				const id = res.data.id
+				callback(true, id);
 			}
-			console.log(params)
-			history.push('/staff')
 			dispatch({ type: LOADING_CLEAR })
 		})
 		.catch(err => {
+			callback(false, null);
 			dispatch({
 				type: SET_ERRORS,
 				payload: err.response.data,
@@ -60,12 +57,12 @@ export const addStaff = (params: any, history: any, callback:any) => (dispatch: 
 		})
 }
 
-export const updateClient = (params: any, history: any, props: any)  => (dispatch: any) => {
+export const updateClient = (params: any, props: any) => (dispatch: any) => {
 	dispatch({ type: BUTTON_LOADING })
 	axios
 		.patch(`users/${params.id}`, params)
 		.then(res => {
-			history.push(history)
+
 			dispatch({ type: LOADING_CLEAR })
 		})
 		.catch(err => {
@@ -103,7 +100,6 @@ export const deleteStaff = (clientId: any, params: any) => (dispatch: any) => {
 		})
 }
 
-
 export const getResourceServices = (params: any) => (dispatch: any) => {
 	dispatch({ type: LOADING_UI })
 	axios
@@ -119,3 +115,99 @@ export const getResourceServices = (params: any) => (dispatch: any) => {
 			console.log(err)
 		})
 }
+
+export const addResourceServices = (params: any) => (dispatch: any) => {
+	dispatch({ type: BUTTON_LOADING })
+	axios
+		.post(`/resourcesServices`, params)
+		.then(res => {
+			dispatch({ type: LOADING_CLEAR })
+		})
+		.catch(err => {
+			console.log(err)
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response.data,
+			})
+			dispatch({ type: LOADING_CLEAR })
+		})
+}
+
+export const updateResourceServices = (params: any) => (dispatch: any) => {
+	dispatch({ type: BUTTON_LOADING })
+	axios
+		.patch(`resourcesServices/${params.resourceId}`, params)
+		.then(res => {
+			dispatch({ type: LOADING_CLEAR })
+		})
+		.catch(err => {
+			console.log(err)
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response.data,
+			})
+			dispatch({ type: LOADING_CLEAR })
+		})
+}
+
+
+export const staffService = (params: any) => (dispatch: any) => {
+	axios
+		.get(`/staff/services`, { params })
+		.then(res => {
+			dispatch({
+				type: SET_STAFF_SERVICE,
+				payload: res.data,
+			})
+			dispatch({ type: CLEAR_ERRORS })
+		})
+		.catch(err => {
+			console.log(err)
+		})
+}
+
+export const uploadImage = (imageToSave: any, callback: any) => (dispatch: any) => {
+	dispatch({ type: BUTTON_LOADING })
+	const config = {
+		headers: { "content-type": "multipart/form-data" },
+	};
+	const url = "http://upload-stage.savantsaloncrm.com/s3/upload"
+	axios.post(url, imageToSave, config)
+		.then((res: any) => {
+			if (res.data) {
+				const key = res.data.key
+				const url = res.data.url
+				callback(true, key, url);
+			}
+			dispatch({ type: LOADING_CLEAR })
+		})
+		.catch(err => {
+			callback(false, null);
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response,
+			})
+			dispatch({ type: LOADING_CLEAR })
+		})
+};
+
+export const getImageFile = (imageName: any, bussinessId: any, callback: any) => (dispatch: any) => {
+	dispatch({ type: BUTTON_LOADING })
+	console.log(bussinessId);
+	axios.get(`s3/getFileURL?fileName=${imageName.imageName}&businessId=${bussinessId.bussinessId}`)
+		.then((res: any) => {
+			if (res) {
+				const valres = res
+				callback(true, valres);
+			}
+			dispatch({ type: LOADING_CLEAR })
+		})
+		.catch(err => {
+			callback(false, null);
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response,
+			})
+			dispatch({ type: LOADING_CLEAR })
+		})
+};

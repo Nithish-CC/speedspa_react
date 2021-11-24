@@ -7,7 +7,9 @@ import uiReducer from './reducers/uiReducers'
 import businessReducers from './reducers/businessReducers'
 import reportReducers from './reducers/reportReducers'
 import productReducers from './reducers/productReducers'
-import allreportReducers from './reducers/report/totalSalesReducers'
+import serviceReducers from './reducers/serviceReducers'
+import scheduleReducers from './reducers/scheduleReducers'
+
 declare global {
 	interface Window {
 		__REDUX_DEVTOOLS_EXTENSION__?: typeof compose
@@ -19,9 +21,9 @@ const reducer = combineReducers({
 	UI: uiReducer,
 	business: businessReducers,
 	report: reportReducers,
-	product : productReducers,
-	allreport: allreportReducers
-
+	product: productReducers,
+	service: serviceReducers,
+	schedule: scheduleReducers,
 })
 
 const initialState = {}

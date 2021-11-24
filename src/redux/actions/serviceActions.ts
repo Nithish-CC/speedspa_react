@@ -1,4 +1,4 @@
-import { LOADING_UI, CLEAR_ERRORS, BUTTON_LOADING, LOADING_CLEAR, SET_ERRORS, SET_SERVICE_CATEGORIES, SET_SERVICE_CATEGORY, SET_SERVICE_ORDERS, SET_SERVICES, SET_ROOT_SERVICE_CATEGORIES } from '../types'
+import { LOADING_UI, CLEAR_ERRORS, BUTTON_LOADING, LOADING_CLEAR, SET_ERRORS, SET_SERVICE_CATEGORIES, SET_SERVICE_CATEGORY, SET_SERVICE_ORDERS, SET_SERVICES, SET_ROOT_SERVICE_CATEGORIES, SET_SERVICE_DATA, SET_SERVICE_SERVICE_DATA } from '../types'
 import axios from 'axios'
 
 // category
@@ -98,8 +98,7 @@ export const updateServiceCategory = (params: any, history: any, props: any) => 
 	axios
 		.put(`categories/${params.id}`, params)
 		.then(res => {
-			//history.push('/services/categories')
-			history.push(history)
+			history.push('/services/categories')
 			dispatch({ type: LOADING_CLEAR })
 		})
 		.catch(err => {
@@ -130,6 +129,23 @@ export const getAllService = (params: any) => (dispatch: any) => {
 		})
 }
 
+export const addServiceOfService = (params: any, history: any) => (dispatch: any) => {
+	dispatch({ type: BUTTON_LOADING })
+	axios
+		.post('/services', params)
+		.then(res => {
+			history.push('/services')
+			dispatch({ type: LOADING_CLEAR })
+		})
+		.catch(err => {
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response.data,
+			})
+			dispatch({ type: LOADING_CLEAR })
+		})
+}
+
 export const searchService = (params: any) => (dispatch: any) => {
 	dispatch({ type: LOADING_UI })
 	axios
@@ -146,13 +162,73 @@ export const searchService = (params: any) => (dispatch: any) => {
 		})
 }
 
-export const deleteService = (clientId: any, params: any) => (dispatch: any) => {
+export const deleteService = (serviceId: any, params: any) => (dispatch: any) => {
 	axios
-		.delete(`/users/${clientId}`, { params })
+		.delete(`/services/${serviceId}`, { params })
 		.then(res => {
 		})
 		.catch(err => {
 			console.log(err)
+		})
+}
+
+export const deleteAddCost = (params: any) => (dispatch: any) => {
+	axios
+		.post(`/variations`, params)
+		.then(res => {
+			console.log("success");
+		})
+		.catch(err => {
+			console.log(err)
+		})
+}
+
+export const serviceAddCost = (params: any) => (dispatch: any) => {
+	dispatch({ type: BUTTON_LOADING })
+	axios
+		.post(`/variations`, params)
+		.then(res => {
+			dispatch({ type: LOADING_CLEAR })
+		})
+		.catch(err => {
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response,
+			})
+			dispatch({ type: LOADING_CLEAR })
+		})
+}
+
+export const serviceUpdateService = (params: any, history: any) => (dispatch: any) => {
+	dispatch({ type: BUTTON_LOADING })
+	axios
+		.patch(`/services/${params.id}`, params)
+		.then(res => {
+			history.push('/services')
+			dispatch({ type: LOADING_CLEAR })
+		})
+		.catch(err => {
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response,
+			})
+			dispatch({ type: LOADING_CLEAR })
+		})
+}
+
+export const serviceUpdateAddCost = (params: any) => (dispatch: any) => {
+	dispatch({ type: BUTTON_LOADING })
+	axios
+		.post(`/variations`, params)
+		.then(res => {
+			dispatch({ type: LOADING_CLEAR })
+		})
+		.catch(err => {
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response,
+			})
+			dispatch({ type: LOADING_CLEAR })
 		})
 }
 
@@ -189,6 +265,22 @@ export const searchOrder = (params: any) => (dispatch: any) => {
 		})
 }
 
+export const searchServiceService = (serviceId: any, params: any) => (dispatch: any) => {
+	dispatch({ type: LOADING_UI })
+	axios
+		.get(`/services/${serviceId}`, { params })
+		.then(res => {
+			dispatch({
+				type: SET_SERVICE_SERVICE_DATA,
+				payload: res.data,
+			})
+			dispatch({ type: CLEAR_ERRORS })
+		})
+		.catch(err => {
+			console.log(err)
+		})
+}
+
 export const deleteOrder = (clientId: any, params: any) => (dispatch: any) => {
 	axios
 		.delete(`/users/${clientId}`, { params })
@@ -212,5 +304,77 @@ export const getRootServiceCategory = (params: any) => (dispatch: any) => {
 		})
 		.catch(err => {
 			console.log(err)
+		})
+}
+
+//staff add resources
+export const getAllStaffResources = (params: any) => (dispatch: any) => {
+	dispatch({ type: LOADING_UI })
+	axios
+		.get(`/categories?`, { params })
+		.then(res => {
+			dispatch({
+				type: SET_SERVICE_DATA,
+				payload: res.data,
+			})
+			dispatch({ type: CLEAR_ERRORS })
+		})
+		.catch(err => {
+			console.log(err)
+		})
+}
+
+//adding staff resource 
+export const addStaffCategory = (profileId: any, params: any, history: any) => (dispatch: any) => {
+	dispatch({ type: BUTTON_LOADING })
+	axios
+		.patch(`/categories/${profileId}`, params)
+		.then(res => {
+			history.push('/staff')
+			dispatch({ type: LOADING_CLEAR })
+		})
+		.catch(err => {
+			console.log(err)
+		})
+	dispatch({ type: LOADING_CLEAR })
+}
+
+//update staff resource 
+export const updateStaffServiceResource = (params: any, history: any, props: any) => (dispatch: any) => {
+	dispatch({ type: BUTTON_LOADING })
+	axios
+		.patch(`categories/${params.id}`, params)
+		.then(res => {
+			history.push('/staff')
+
+			dispatch({ type: LOADING_CLEAR })
+		})
+		.catch(err => {
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response.data,
+			})
+			dispatch({ type: LOADING_CLEAR })
+		})
+}
+
+//update Services Order Details
+export const updateServiceOrder = (params: any,callback: any) => (dispatch: any) => {
+	axios.defaults.headers.common['x-populate'] = 'clientId,serviceId'
+	dispatch({ type: BUTTON_LOADING })
+	axios
+		.post('/orders/update/order', params)
+		.then(res => {
+			const key = res.data
+			callback(true, key);
+			dispatch({ type: LOADING_CLEAR })
+			delete axios.defaults.headers.common['x-populate']
+		})
+		.catch(err => {
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response.data,
+			})
+			dispatch({ type: LOADING_CLEAR })
 		})
 }

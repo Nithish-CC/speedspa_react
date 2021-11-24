@@ -1,19 +1,23 @@
-import { SET_SERVICE_CATEGORIES, SET_SERVICE_ORDERS, SET_SERVICES, SET_ROOT_SERVICE_CATEGORIES, SET_SERVICE_CATEGORY } from '../types'
+import { SET_SERVICE_CATEGORIES, SET_SERVICE_ORDERS, SET_SERVICES, SET_ROOT_SERVICE_CATEGORIES, SET_SERVICE_CATEGORY, SET_SERVICE_DATA, SET_SERVICE_SERVICE_DATA } from '../types'
 
 export type State = Readonly<{
 	categoryDetails: object,
-	serviceDetails: object,
+	serviceDetails: [],
 	orderDetails: object,
 	getRootServiceCategory: object,
-	serviceCategory:[]
+	serviceCategory: [],
+	getAllStaffResources: [],
+	getServiceServiceData: Object
 }>
 
 const initialState: State = {
 	categoryDetails: {},
-	serviceDetails: {},
+	serviceDetails: [],
 	orderDetails: {},
 	getRootServiceCategory: {},
-	serviceCategory:[]
+	serviceCategory: [],
+	getAllStaffResources: [],
+	getServiceServiceData: {}
 }
 
 export default function serviceReducers(state = initialState, action: any) {
@@ -42,6 +46,16 @@ export default function serviceReducers(state = initialState, action: any) {
 			return {
 				...state,
 				serviceCategory: action.payload,
+			}
+		case SET_SERVICE_DATA:
+			return {
+				...state,
+				getAllStaffResources: action.payload,
+			}
+		case SET_SERVICE_SERVICE_DATA:
+			return {
+				...state,
+				getServiceServiceData: action.payload,
 			}
 		default:
 			return state

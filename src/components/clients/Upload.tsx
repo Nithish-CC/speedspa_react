@@ -3,14 +3,7 @@ import { connect, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import PageHeader from './../core/PageHeader'
 import { Formik } from 'formik'
-import {
-	Form,
-	Col,
-	Row,
-	FormControl,
-	FormGroup,
-	FormLabel
-} from 'react-bootstrap'
+import { Form, Col, Row, FormControl, FormGroup, FormLabel } from 'react-bootstrap'
 import { uploadClients } from '../../redux/actions/clientActions'
 import XLSX from 'xlsx'
 

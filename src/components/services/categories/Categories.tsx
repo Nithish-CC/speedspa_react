@@ -107,15 +107,6 @@ const ServiceCategorys = (props: any) => {
 																		<i title='Delete' className='far fa-trash-alt'></i>
 																	</a>
 																</td>
-                                                                {/* <td>
-                                                                    <div style={{ 'position': 'relative' }}>
-                                                                        <button data-toggle='dropdown' className='btn btn-xs btn-gray dropdown-toggle' type='button'>Action&nbsp;<span className='caret'></span></button>
-                                                                        <ul className='dropdown-menu'>
-                                                                            <li><Link key={index} to={`/services/categories/view/${category.id}`}>View/Edit</Link></li>
-                                                                            <li><a onClick={() => deletePopup(category, index)}>Delete</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </td> */}
                                                             </tr>
                                                         );
                                                     })

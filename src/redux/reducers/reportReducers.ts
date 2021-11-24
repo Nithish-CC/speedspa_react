@@ -1,17 +1,33 @@
-import { SET_TOTAL_SALES, SET_THIRTY_DAY_SNAPSHOT } from '../types'
+import { SET_TOTAL_SALES, SET_THIRTY_DAY_SNAPSHOT, SET_REPORT_TOTAL_SALES, SET_REPORT_ESTIMATED_PAYROLL, SET_REPORT_SERVICES_COMPLETED, SET_REPORT_PRODUCT_SALES, SET_REPORT_CLIENT_REPORT, SET_STAFF_BOOKING_ANALYSIS, SET_PRODUCT_ORDER,SET_SERVICE_ORDER } from '../types'
 
 export type State = Readonly<{
     totalSales: object,
     thirtyDaySnapshot: object,
+    reportTotalSales: [],
+    reportEstimatedRoll: [],
+    reportServiceCompleted: [],
+    reportProductSales: [],
+    reportClientReport: [],
+    reportStaffBookingAnalysis: [],
+    getproductOrders: [],
+    getServiceOrders:{}
 }>
 
 const initialState: State = {
     totalSales: {},
     thirtyDaySnapshot: {},
+    reportTotalSales: [],
+    reportEstimatedRoll: [],
+    reportServiceCompleted: [],
+    reportProductSales: [],
+    reportClientReport: [],
+    reportStaffBookingAnalysis: [],
+    getproductOrders: [],
+    getServiceOrders:{}
 }
 
 export default function reportReducers(state = initialState, action: any) {
-	switch (action.type) {
+    switch (action.type) {
         case SET_TOTAL_SALES:
             return {
                 ...state,
@@ -22,7 +38,47 @@ export default function reportReducers(state = initialState, action: any) {
                 ...state,
                 thirtyDaySnapshot: action.payload,
             }
-		default:
-			return state
-	}
+        case SET_REPORT_TOTAL_SALES:
+            return {
+                ...state,
+                reportTotalSales: action.payload,
+            }
+        case SET_REPORT_ESTIMATED_PAYROLL:
+            return {
+                ...state,
+                reportEstimatedRoll: action.payload,
+            }
+        case SET_REPORT_SERVICES_COMPLETED:
+            return {
+                ...state,
+                reportServiceCompleted: action.payload,
+            }
+        case SET_REPORT_PRODUCT_SALES:
+            return {
+                ...state,
+                reportProductSales: action.payload,
+            }
+        case SET_REPORT_CLIENT_REPORT:
+            return {
+                ...state,
+                reportClientReport: action.payload,
+            }
+        case SET_STAFF_BOOKING_ANALYSIS:
+            return {
+                ...state,
+                reportStaffBookingAnalysis: action.payload,
+            }
+        case SET_PRODUCT_ORDER:
+            return {
+                ...state,
+                getproductOrders: action.payload,
+            }
+        case SET_SERVICE_ORDER:
+            return {
+                ...state,
+                getServiceOrders: action.payload,
+            }
+        default:
+            return state
+    }
 }

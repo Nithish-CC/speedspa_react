@@ -1,11 +1,18 @@
-import { SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED, LOADING_USER, SET_CLIENTS, SET_CLIENT } from '../types'
+import { SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED, LOADING_USER, SET_CLIENTS, SET_CLIENT, SET_STAFFS, SET_STAFF, SET_STAFF_RESOURCES, SET_STAFF_RESPONSE_DATA, SET_PAYEMENT_CARD,SET_STYLIST,SET_STAFF_SERVICE } from '../types'
 
 export type State = Readonly<{
 	authenticated: boolean,
 	credentials: object,
 	loading: boolean,
 	allClients: [],
-	clientInfo: object
+	clientInfo: object,
+	allStaff: [],
+	allStylist: [],
+	staffInfo: object,
+	resourcesServices: [],
+	staffResponseData: [],
+	paywithCC: object,
+	staffService:[]
 }>
 
 const initialState: State = {
@@ -14,6 +21,13 @@ const initialState: State = {
 	loading: false,
 	allClients: [],
 	clientInfo: {},
+	allStaff: [],
+	allStylist: [],
+	staffInfo: {},
+	resourcesServices: [],
+	staffResponseData: [],
+	paywithCC: {},
+	staffService:[]
 }
 
 export default function userReducers(state = initialState, action: any) {
@@ -46,6 +60,42 @@ export default function userReducers(state = initialState, action: any) {
 			return {
 				...state,
 				clientInfo: action.payload,
+			}
+		case SET_STAFFS:
+			return {
+				...state,
+				allStaff: action.payload,
+			}
+		case SET_STAFF:
+			return {
+				...state,
+				staffInfo: action.payload,
+			}
+		case SET_STYLIST:
+			return {
+				...state,
+				allStylist: action.payload,
+			}
+		case SET_STAFF_RESOURCES:
+			return {
+				...state,
+				resourcesServices: action.payload,
+			}
+		case SET_STAFF_RESPONSE_DATA:
+			return {
+				...state,
+				staffResponseData: action.payload,
+
+			}
+		case SET_PAYEMENT_CARD:
+			return {
+				...state,
+				paywithCC: action.payload,
+			}
+		case SET_STAFF_SERVICE:
+			return {
+				...state,
+				staffService: action.payload,
 			}
 		default:
 			return state
