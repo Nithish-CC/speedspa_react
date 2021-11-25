@@ -234,7 +234,7 @@ export const serviceUpdateAddCost = (params: any) => (dispatch: any) => {
 
 // order
 export const getAllOrder = (params: any) => (dispatch: any) => {
-	dispatch({ type: LOADING_UI })
+	dispatch({ type: BUTTON_LOADING })
 	axios
 		.get(`/reports/orders?`, { params })
 		.then(res => {
@@ -242,10 +242,12 @@ export const getAllOrder = (params: any) => (dispatch: any) => {
 				type: SET_SERVICE_ORDERS,
 				payload: res.data,
 			})
+			dispatch({ type: LOADING_CLEAR })
 			dispatch({ type: CLEAR_ERRORS })
 		})
 		.catch(err => {
 			console.log(err)
+			dispatch({ type: LOADING_CLEAR })
 		})
 }
 

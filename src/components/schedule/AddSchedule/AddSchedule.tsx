@@ -18,6 +18,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "react-time-picker-input";
 import { Form, Col, Row, FormControl, FormGroup, FormLabel, Button, InputGroup } from "react-bootstrap";
 import { AnyObject } from "yup/lib/types";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddSchedule = (props: any) => {
 	const [title] = useState("New Appointment");
@@ -227,6 +229,13 @@ const AddSchedule = (props: any) => {
 		return str.join("&");
 	};
 
+	const notify = (data:any) => {
+		console.log(errors)
+		toast.error(data,{
+		theme: "colored"
+	  })}
+
+
 	const handleSubmit = (values: any) => {
 		let setDate = startDate.toISOString().split("T")[0];
 		let m = moment(`${setDate} ${value}`, "YYYY-MM-DD HH:mm");
@@ -252,8 +261,14 @@ const AddSchedule = (props: any) => {
 		values.services = [staffMainService[0]];
 		values.timeStart = setDateTime;
 		repeatAppointments(values)
-		props.addAppointments(values, queryString);
-		history.push('/schedule')
+		props.addAppointments(values, queryString,(success: any, data: any) => {
+			if (success) {	
+				history.push('/schedule');
+			}
+			else{
+				notify(data)
+			}
+		    });
 	};
 
 	const selectedValue = (value: any) => {
@@ -465,188 +480,187 @@ const AddSchedule = (props: any) => {
 						enableReinitialize={true}>
 						{({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => {
 							return (
-								<div className="row">
-									<div className="col-lg-12">
-										<div className="wrapper wrapper-content animated fadeInRight">
-											<div className="ibox float-e-margins">
-												<div className="ibox-content m-b-sm border-bottom">
-													<Form
-														name="scheduleItemEdit"
-														className="form-horizontal"
-														onSubmit={handleSubmit}>
-														<div className="text-success m-t-md m-b-md"></div>
-														<div className="text-danger m-t-md m-b-md"></div>
-														<FormGroup>
-															<Col sm="12">
-																<FormLabel className="control-label">
-																	Service Category
-																</FormLabel>
-																<FormControl
-																	as="select"
-																	name="categoryId"
-																	value={view ? appointment.categoryId : values.id}
-																	onChange={(e) =>
-																		selectedServiceCategory(e.target.value)
-																	}
-																	onBlur={handleBlur}>
-																	<option value="">Category</option>
-																	{categoryDetails &&
-																		categoryDetails.length &&
-																		categoryDetails.map((value: any) => {
-																			return (
-																				<option value={value.id}>
-																					{value.name}
-																				</option>
-																			);
-																		})}
-																</FormControl>
-															</Col>
-														</FormGroup>
-														<FormGroup>
-															<Col sm="12">
-																<FormLabel className="control-label">
-																	Main Service
-																</FormLabel>
-																<FormControl
-																	as="select"
-																	name="Main Service"
-																	value={
-																		staffMainService &&
-																		staffMainService.length &&
-																		staffMainService[0]
-																	}
-																	onChange={(e) =>
-																		selectedMainService(e.target.value)
-																	}>
-																	<option value="">Main Service</option>
-																	{mainServiceCategory &&
-																		mainServiceCategory.length &&
-																		mainServiceCategory.map((value: any) => {
-																			return (
-																				<option value={value.id}>
-																					{value.name}
-																				</option>
-																			);
-																		})}
-																</FormControl>
-															</Col>
-														</FormGroup>
-														<FormGroup>
-															<div
-																className="col-lg-12 text-center"
-																style={{ paddingTop: "17px;", height: "60px;" }}></div>
-															<div className="col-xs-11 col-xs-push-1">
-																<div style={{ height: "60px;" }}>
-																	<FormLabel className="control-label">
-																		Add On Service
-																	</FormLabel>
-																	<FormControl
-																		as="select"
-																		name="Add On Service"
-																		value={
-																			staffMainService &&
-																			staffMainService.length &&
-																			staffMainService[1]
-																		}
-																		onChange={(e) => {
-																			chooseAddonService(e);
-																			staffMainService[1] = e.target.value;
-																		}}>
-																		<option value="">Choose Add On Service</option>
-																		{addOnServiceData &&
-																			addOnServiceData.length &&
-																			addOnServiceData.map((value: any) => {
-																				return (
-																					<option value={value.id}>
-																						{value.name}
-																					</option>
-																				);
-																			})}
-																	</FormControl>
-																</div>
-															</div>
-														</FormGroup>
-														<FormGroup>
-															<div
-																className="col-lg-12 text-center"
-																style={{ paddingTop: "17px;", height: "60px;" }}></div>
-															<div className="col-xs-10 col-xs-push-2">
-																<div style={{ height: "60px;" }}>
-																	<FormLabel className="control-label">
-																		Do you want also choose one of these?
-																	</FormLabel>
-																	<FormControl
-																		as="select"
-																		name="Add On Service"
-																		value={
-																			staffMainService &&
-																			staffMainService.length &&
-																			staffMainService[2]
-																		}
-																		onChange={(e) => SelectedFinalAddon(e)}>
-																		<option value="">Choose Add On Service</option>
-																		{chooseAddOnOne &&
-																			chooseAddOnOne.length &&
-																			chooseAddOnOne.map((value: any) => {
-																				return (
-																					<option value={value.id}>
-																						{value.name}
-																					</option>
-																				);
-																			})}
-																	</FormControl>
-																</div>
-															</div>
-														</FormGroup>
-														<FormGroup>
-															<Col sm="12">
-																<FormLabel className="control-label">Staff</FormLabel>
-																<SelectSearch
-																	ref={searchInput}
-																	options={options}
-																	filterOptions={handleStaffFilter}
-																	value={changeStaff}
-																	name="staff"
-																	placeholder="Staff"
-																	search
-																	onChange={handleChangeStaff}
-																/>
-															</Col>
-														</FormGroup>
-														<FormGroup>
-															<Col sm="12">
-																<FormLabel className="control-label">Client</FormLabel>
-																<SelectSearch
-																	ref={searchInput}
-																	options={customer}
-																	filterOptions={handleCustomerFilter}
-																	value={changeCustomer}
-																	name="Customer"
-																	placeholder="Customer"
-																	search
-																	onChange={handleChangeCustomer}
-																/>
-															</Col>
-														</FormGroup>
-														<div className="form-group">
-															<div className="col-lg-6">
-																<label className="control-label">
-																	Appointment Time
-																</label>
-															
-																	<DatePicker
-																		selected={startDate}
-																		showPopperArrow={false}
-																		style={{
-																			width: "100%",
-																			border: "1px solid white",
-																		}}
-																		onChange={(date: any) => setStartDate(date)}
-																		dateFormat="EEE MMMM d, yyyy"
-																	/>
-																
-															</div>
-															{/* <div className="col-lg-5">
+                                <div className="row">
+                                    <div className="col-lg-12">
+                                        <div className="wrapper wrapper-content animated fadeInRight">
+                                            <div className="ibox float-e-margins">
+                                                <div className="ibox-content m-b-sm border-bottom">
+                                                    <Form
+                                                        name="scheduleItemEdit"
+                                                        className="form-horizontal"
+                                                        onSubmit={handleSubmit}>
+                                                        <div className="text-success m-t-md m-b-md"></div>
+                                                        <div className="text-danger m-t-md m-b-md"></div>
+                                                        <FormGroup>
+                                                            <Col sm="12">
+                                                                <FormLabel className="control-label">
+                                                                    Service Category
+                                                                </FormLabel>
+                                                                <FormControl
+                                                                    as="select"
+                                                                    name="categoryId"
+                                                                    value={view ? appointment.categoryId : values.id}
+                                                                    onChange={(e) =>
+                                                                        selectedServiceCategory(e.target.value)
+                                                                    }
+                                                                    onBlur={handleBlur}>
+                                                                    <option value="">Category</option>
+                                                                    {categoryDetails &&
+                                                                        categoryDetails.length &&
+                                                                        categoryDetails.map((value: any) => {
+                                                                            return (
+                                                                                <option value={value.id}>
+                                                                                    {value.name}
+                                                                                </option>
+                                                                            );
+                                                                        })}
+                                                                </FormControl>
+                                                            </Col>
+                                                        </FormGroup>
+                                                        <FormGroup>
+                                                            <Col sm="12">
+                                                                <FormLabel className="control-label">
+                                                                    Main Service
+                                                                </FormLabel>
+                                                                <FormControl
+                                                                    as="select"
+                                                                    name="Main Service"
+                                                                    value={
+                                                                        staffMainService &&
+                                                                        staffMainService.length &&
+                                                                        staffMainService[0]
+                                                                    }
+                                                                    onChange={(e) =>
+                                                                        selectedMainService(e.target.value)
+                                                                    }>
+                                                                    <option value="">Main Service</option>
+                                                                    {mainServiceCategory &&
+                                                                        mainServiceCategory.length &&
+                                                                        mainServiceCategory.map((value: any) => {
+                                                                            return (
+                                                                                <option value={value.id}>
+                                                                                    {value.name}
+                                                                                </option>
+                                                                            );
+                                                                        })}
+                                                                </FormControl>
+                                                            </Col>
+                                                        </FormGroup>
+                                                        <FormGroup>
+                                                            <div
+                                                                className="col-lg-12 text-center"
+                                                                style={{ paddingTop: "17px;", height: "60px;" }}></div>
+                                                            <div className="col-xs-11 col-xs-push-1">
+                                                                <div style={{ height: "60px;" }}>
+                                                                    <FormLabel className="control-label">
+                                                                        Add On Service
+                                                                    </FormLabel>
+                                                                    <FormControl
+                                                                        as="select"
+                                                                        name="Add On Service"
+                                                                        value={
+                                                                            staffMainService &&
+                                                                            staffMainService.length &&
+                                                                            staffMainService[1]
+                                                                        }
+                                                                        onChange={(e) => {
+                                                                            chooseAddonService(e);
+                                                                            staffMainService[1] = e.target.value;
+                                                                        }}>
+                                                                        <option value="">Choose Add On Service</option>
+                                                                        {addOnServiceData &&
+                                                                            addOnServiceData.length &&
+                                                                            addOnServiceData.map((value: any) => {
+                                                                                return (
+                                                                                    <option value={value.id}>
+                                                                                        {value.name}
+                                                                                    </option>
+                                                                                );
+                                                                            })}
+                                                                    </FormControl>
+                                                                </div>
+                                                            </div>
+                                                        </FormGroup>
+                                                        <FormGroup>
+                                                            <div
+                                                                className="col-lg-12 text-center"
+                                                                style={{ paddingTop: "17px;", height: "60px;" }}></div>
+                                                            <div className="col-xs-10 col-xs-push-2">
+                                                                <div style={{ height: "60px;" }}>
+                                                                    <FormLabel className="control-label">
+                                                                        Do you want also choose one of these?
+                                                                    </FormLabel>
+                                                                    <FormControl
+                                                                        as="select"
+                                                                        name="Add On Service"
+                                                                        value={
+                                                                            staffMainService &&
+                                                                            staffMainService.length &&
+                                                                            staffMainService[2]
+                                                                        }
+                                                                        onChange={(e) => SelectedFinalAddon(e)}>
+                                                                        <option value="">Choose Add On Service</option>
+                                                                        {chooseAddOnOne &&
+                                                                            chooseAddOnOne.length &&
+                                                                            chooseAddOnOne.map((value: any) => {
+                                                                                return (
+                                                                                    <option value={value.id}>
+                                                                                        {value.name}
+                                                                                    </option>
+                                                                                );
+                                                                            })}
+                                                                    </FormControl>
+                                                                </div>
+                                                            </div>
+                                                        </FormGroup>
+                                                        <FormGroup>
+                                                            <Col sm="12">
+                                                                <FormLabel className="control-label">Staff</FormLabel>
+                                                                <SelectSearch
+                                                                    ref={searchInput}
+                                                                    options={options}
+                                                                    filterOptions={handleStaffFilter}
+                                                                    value={changeStaff}
+                                                                    name="staff"
+                                                                    placeholder="Staff"
+                                                                    search
+                                                                    onChange={handleChangeStaff}
+                                                                />
+                                                            </Col>
+                                                        </FormGroup>
+                                                        <FormGroup>
+                                                            <Col sm="12">
+                                                                <FormLabel className="control-label">Client</FormLabel>
+                                                                <SelectSearch
+                                                                    ref={searchInput}
+                                                                    options={customer}
+                                                                    filterOptions={handleCustomerFilter}
+                                                                    value={changeCustomer}
+                                                                    name="Customer"
+                                                                    placeholder="Customer"
+                                                                    search
+                                                                    onChange={handleChangeCustomer}
+                                                                />
+                                                            </Col>
+                                                        </FormGroup>
+                                                        <div className="form-group">
+                                                            <div className="col-lg-6">
+                                                                <label className="control-label">
+                                                                    Appointment Time
+                                                                </label>
+
+                                                                <DatePicker
+                                                                    selected={startDate}
+                                                                    showPopperArrow={false}
+                                                                    style={{
+                                                                        width: "100%",
+                                                                        border: "1px solid white",
+                                                                    }}
+                                                                    onChange={(date: any) => setStartDate(date)}
+                                                                    dateFormat="EEE MMMM d, yyyy"
+                                                                />
+                                                            </div>
+                                                            {/* <div className="col-lg-5">
 																<label className="control-label">
 																	Available TimeSlots{" "}
 																	<small> ( Not Available )</small>
@@ -655,51 +669,73 @@ const AddSchedule = (props: any) => {
 																	<option value="">Choose TimeSlot</option>
 																</select>
 															</div> */}
-														</div>
-														<div className="form-group">
-															<div className="col-lg-5">
-																<div className="input-group">
-																	<TimePicker
-																		eachInputDropdown
-																		onChange={(newValue: any) => setValue(newValue)}
-																		value={value}
-																	/>
-																</div>
-															</div>
-														</div>
-														<FormGroup>
-															<Col sm="6">
-																<FormLabel className="control-label">Repeat</FormLabel>
-																<FormControl as="select" name="Repeat" onChange={(e:any)=>{setWeeklyRepeat(e.target.value)}}>
-																	<option value="">None</option>
-																	<option value="7">Weekly</option>
-																	<option value="28">Every 4 weeks</option>
-																	<option value="35">Every 5 weeks</option>
-																	<option value="42">Every 6 weeks</option>
-																</FormControl>
-															</Col>
-														</FormGroup>
-														<FormGroup>
-															<Col lg="12">
-																<Button className="btn btn-white" style={{backgroundColor:"white",color:"black"}} type="button" onClick={()=>{history.push('/schedule')}}>
-																	Cancel
-																</Button>
-																&nbsp;
-																<Button variant="primary" type="submit">
-																	Save Changes
-																	{UI.buttonLoading && (
-																		<i className="fa fa-spinner fa-spin"></i>
-																	)}
-																</Button>
-															</Col>
-														</FormGroup>
-													</Form>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							);
+                                                        </div>
+                                                        <div className="form-group">
+                                                            <div className="col-lg-5">
+                                                                <div className="input-group">
+                                                                    <TimePicker
+                                                                        eachInputDropdown
+                                                                        onChange={(newValue: any) => setValue(newValue)}
+                                                                        value={value}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <FormGroup>
+                                                            <Col sm="6">
+                                                                <FormLabel className="control-label">Repeat</FormLabel>
+                                                                <FormControl
+                                                                    as="select"
+                                                                    name="Repeat"
+                                                                    onChange={(e: any) => {
+                                                                        setWeeklyRepeat(e.target.value);
+                                                                    }}>
+                                                                    <option value="">None</option>
+                                                                    <option value="7">Weekly</option>
+                                                                    <option value="28">Every 4 weeks</option>
+                                                                    <option value="35">Every 5 weeks</option>
+                                                                    <option value="42">Every 6 weeks</option>
+                                                                </FormControl>
+                                                            </Col>
+                                                        </FormGroup>
+                                                        <ToastContainer
+                                                            position="bottom-right"
+                                                            autoClose={5000}
+                                                            hideProgressBar={false}
+                                                            newestOnTop={false}
+                                                            closeOnClick
+                                                            rtl={false}
+                                                            pauseOnFocusLoss
+                                                            draggable
+                                                            pauseOnHover
+                                                        />
+                                                        <FormGroup>
+                                                            <Col lg="12">
+                                                                <Button
+                                                                    className="btn btn-white"
+                                                                    style={{ backgroundColor: "white", color: "black" }}
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                        history.push("/schedule");
+                                                                    }}>
+                                                                    Cancel
+                                                                </Button>
+                                                                &nbsp;
+                                                                <Button variant="primary" type="submit">
+                                                                    Save Changes
+                                                                    {UI.buttonLoading && (
+                                                                        <i className="fa fa-spinner fa-spin"></i>
+                                                                    )}
+                                                                </Button>
+                                                            </Col>
+                                                        </FormGroup>
+                                                    </Form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
 						}}
 					</Formik>
 				</React.Fragment>

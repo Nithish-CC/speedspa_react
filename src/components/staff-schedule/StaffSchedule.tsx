@@ -46,13 +46,14 @@ const StaffSchedule = (props: any) => {
     const [endDate, setEndDate] = useState(new Date());
     const [repeat,setRepeat] = useState("weekly");
     const [frequency, setFrequency] = useState<any[]>([]);
-	//useEffect
 
+	//useEffect
     console.log(moment(startDate).format("YYYY-MM-DD"))
     console.log(moment(endDate).format("YYYY-MM-DD"))
     console.log(startTime >= endTime)
     let verifyDateTime = (moment(startDate).format("YYYY-MM-DD") == moment(endDate).format("YYYY-MM-DD") ? startTime <= endTime : true)
     console.log(verifyDateTime)
+
 	//intial call
 	useEffect(() => {
 		getAllStaff();
@@ -288,37 +289,37 @@ const StaffSchedule = (props: any) => {
 																			Repeats on:&emsp;
 																		</FormLabel>
 																		<span>
-																			<input type="checkbox" name="repeats" value="1" onClick={(e)=>{weeklyRepeat(e)}}/>
+																			<input type="checkbox" name="repeats" value="0" onClick={(e)=>{weeklyRepeat(e)}}/>
 																			&nbsp;<strong>Sun</strong>
 																		</span>
 																		&emsp;
 																		<span>
-																			<input type="checkbox" name="repeats" value="2" onClick={(e)=>{weeklyRepeat(e)}}/>
+																			<input type="checkbox" name="repeats" value="1" onClick={(e)=>{weeklyRepeat(e)}}/>
 																			&nbsp;<strong>Mon</strong>
 																		</span>
 																		&emsp;
 																		<span>
-																			<input type="checkbox" name="repeats" value="3" onClick={(e)=>{weeklyRepeat(e)}}/>
+																			<input type="checkbox" name="repeats" value="2" onClick={(e)=>{weeklyRepeat(e)}}/>
 																			&nbsp;<strong>Tue</strong>
 																		</span>
 																		&emsp;
 																		<span>
-																			<input type="checkbox" name="repeats" value="4" onClick={(e)=>{weeklyRepeat(e)}}/>
+																			<input type="checkbox" name="repeats" value="3" onClick={(e)=>{weeklyRepeat(e)}}/>
 																			&nbsp;<strong>Wed</strong>
 																		</span>
 																		&emsp;
                                                                         <span>
-																			<input type="checkbox" name="repeats" value="5" onClick={(e)=>{weeklyRepeat(e)}}/>
+																			<input type="checkbox" name="repeats" value="4" onClick={(e)=>{weeklyRepeat(e)}}/>
 																			&nbsp;<strong>Thu</strong>
 																		</span>
 																		&emsp;
 																		<span>
-																			<input type="checkbox" name="repeats" value="6" onClick={(e)=>{weeklyRepeat(e)}}/>
+																			<input type="checkbox" name="repeats" value="5" onClick={(e)=>{weeklyRepeat(e)}}/>
 																			&nbsp;<strong>Fri</strong>
 																		</span>
 																		&emsp;
 																		<span>
-																			<input type="checkbox" name="repeats" value="7" onClick={(e)=>{weeklyRepeat(e)}}/>
+																			<input type="checkbox" name="repeats" value="6" onClick={(e)=>{weeklyRepeat(e)}}/>
 																			&nbsp;<strong>Sat</strong>
 																		</span>
 																		&emsp;

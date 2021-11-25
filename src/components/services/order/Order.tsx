@@ -416,7 +416,7 @@ const ServiceOrders = (props: any) => {
 													</tr>
 												</thead>
 												<tbody>
-													{allOrder &&
+													{!UI.buttonLoading && allOrder &&
 													allOrder.data &&
 													allOrder.data.length &&
 													getproductOrders &&
@@ -614,11 +614,18 @@ const ServiceOrders = (props: any) => {
 																}
 														</React.Fragment>
 													) : (
+														
 														<tr>
-															<td colSpan={10} className="text-center">
-																No Service Orders
-															</td>
-														</tr>
+														<td colSpan={10} className='text-center'>
+														  {!UI.buttonLoading ? 
+															  'No Service Order' 
+															  :
+															  <div>
+																  <p className='fa fa-spinner fa-spin'></p> <br /> Please Wait , Loading... 
+															  </div>
+														  }
+														</td>
+													  </tr>
 													)}
 												</tbody>
 											</table>
