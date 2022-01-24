@@ -22,7 +22,7 @@ const ProductCategories = (props: any) => {
     index: "",
   });
   const [initialModalPopup] = useState({ ...modalPopup });
-  
+
   const [buttons] = useState([
     {
       title: "Add Category",
@@ -57,6 +57,7 @@ const ProductCategories = (props: any) => {
       name: category.name,
       index: index,
     });
+    console.log(category);
   };
 
   const closeModal = () => {
